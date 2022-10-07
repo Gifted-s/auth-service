@@ -8,7 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-
+	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -39,19 +39,18 @@ func main() {
 	mainRouter := mux.NewRouter()
 	authRouter := mainRouter.PathPrefix("/auth").Subrouter()
 
-	log, _ := zap.NewDevelopment()
+	log, _ := zap.NewProduction()
 	defer log.Sync()
+
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Error("Error loading .env file", zap.Error(err))
 	}
-
 	err = monitormodule.MonitorBinder(log)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
 	log.Info("Starting...")
 
 	suc := authservice.NewSigupController(log)
@@ -79,7 +78,8 @@ func main() {
 
 
 
-
+    // CORS Header
+    cors := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
 	// Adding Prometheus http handler to expose the metrics
 	// this will display our metrics as well as some standard metrics
 	mainRouter.Path("/metrics").Handler(promhttp.Handler())
@@ -87,13 +87,14 @@ func main() {
 	// HTTP server
 	// Add time outs
 	server := &http.Server{
-		Addr:    "localhost:9090",
-		Handler: mainRouter,
+		Addr:    ":9090",
+		Handler:  cors(mainRouter),
 	}
 	fmt.Println("Listening on: 192.168.247.79:9090")
 	err = server.ListenAndServe()
 	if err != nil {
 		fmt.Println("Error Booting the Server")
 	}
-	fmt.Println("Here we are")
+
+
 }

@@ -20,7 +20,7 @@ const endpoint string = "http://localhost:9090/metrics"
 const outputEndpoint string = "http://localhost:9090/checkRoutine"
 const metricConfFile string = "./monitormodule/config.yaml"
 
-type conifgMap struct {
+type configMap struct {
 	Metadataregion     string
 	Metadatapipelineid int
 	Signin             string
@@ -35,7 +35,7 @@ type transformationOutput struct {
 }
 
 // constantly ping specified services for metrics
-func dataAggregator(log *zap.Logger, key string, trackData conifgMap, aggregatorChan chan<- []string) error {
+func dataAggregator(log *zap.Logger, key string, trackData configMap, aggregatorChan chan<- []string) error {
 	// always check every 5 seconds
 	fetchInterval := time.NewTicker(time.Second * 5)
 	for range fetchInterval.C {
@@ -124,12 +124,14 @@ func showDemo(log *zap.Logger, finalChan <-chan string, wg *sync.WaitGroup) {
 
 // MonitorBinder binds all the goroutines and combines the output
 func MonitorBinder(log *zap.Logger) error {
+	log.Info("Got here")
 	content, err := ioutil.ReadFile(metricConfFile)
 	if err != nil {
 		return err
 	}
-	metricEndpoints := conifgMap{}
-	yaml.Unmarshal(content, metricEndpoints)
+
+	metricEndpoints := configMap{}
+	yaml.Unmarshal(content, &metricEndpoints)
 
 	aggregatorChan := make(chan []string)
 	go dataAggregator(log, "Signin", metricEndpoints, aggregatorChan)

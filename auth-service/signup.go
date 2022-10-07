@@ -11,19 +11,19 @@ import (
 
 var (
 	signupRequests = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "signin_total",
+		Name: "signup_total",
 		Help: "Total number of signup request",
 	})
 	signupSuccess = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "signin_success",
+		Name: "signup_success",
 		Help: "Successful signup requests",
 	})
 	signupFail = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "signin_fail",
+		Name: "signup_fail",
 		Help: "Failed signup requests",
 	})
 	signupError = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "signin_error",
+		Name: "signup_error",
 		Help: "Erroneous signup requests",
 	})
 )
