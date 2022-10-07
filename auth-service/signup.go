@@ -47,7 +47,7 @@ func NewSigupController(logger *zap.Logger) *SignupController{
 }
 
 // adds the user to the database of users
-func SignupHandler(rw http.ResponseWriter, r *http.Request) {
+func (ctrl *SignupController)  SignupHandler(rw http.ResponseWriter, r *http.Request) {
 	// extra error handling should be done at server side to prevent malicious attacks
 	if _, ok := r.Header["Email"]; !ok {
 		rw.WriteHeader(http.StatusBadRequest)

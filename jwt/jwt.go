@@ -3,11 +3,25 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
+	"os"
 	"crypto/hmac"
 	"strings"
 	"encoding/json"
 	//"github.com/golang-jwt/jwt/v4"
 )
+
+const (
+	CORRUPT_TOKEN = "Corrupt Token"
+	INVALID_TOKEN = "Invalid Token"
+	EXPIRED_TOKEN = "Expired Token"
+)
+
+func GetSecret() string {
+	return os.Getenv("JWT_SECRET")
+}
+
+
+
 
 // Function for generating the tokens.
 func GenerateToken(header string, payload map[string]string, secret string) (string, error) {
