@@ -27,8 +27,7 @@ func (ctrl *TokenValidator) TokenValidationMiddleware(next http.Handler) http.Ha
 			return
 		}
 		token := r.Header["Token"][0]
-
-		check, err := jwt.ValidateToken(token, "Secure_Random_String")
+		check, err := jwt.ValidateToken(token, jwt.GetSecret())
 
 		if err != nil {
 			rw.WriteHeader(http.StatusInternalServerError)

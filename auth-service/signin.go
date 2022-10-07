@@ -64,7 +64,7 @@ func getSignedToken() (string, error) {
 	// here we provide the shared secret. It should be very complex.
 	// Also, it should be passed as a System Environment variable
 
-	secret := "Secure_Random_String"
+	secret := jwt.GetSecret()
 	header := "HS256"
 	tokenString, err := jwt.GenerateToken(header, claimsMap, secret)
 	if err != nil {
