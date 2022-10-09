@@ -45,36 +45,25 @@ func main() {
 	if err != nil {
 		log.Error("Error loading .env file", zap.Error(err))
 	}
-    go monitormodule.MonitorBinder(log)
+	go monitormodule.MonitorBinder(log)
 	log.Info("Starting...")
 
 	suc := authservice.NewSigupController(log)
 	sic := authservice.NewSiginController(log)
 
-
-
-    // Main routes for pinging and testing prometheus
+	// Main routes for pinging and testing prometheus
 	mainRouter.HandleFunc("/ping", PingHandler)
 	mainRouter.HandleFunc("/checkRoutine", simplePostHandler).Methods("POST")
 
-
-
-
-    // authentication routes
+	// authentication routes
 	authRouter.HandleFunc("/signup", suc.SignupHandler)
 	// The Signin will send the JWT back as we are making microservices.
 	// The JWT token will make sure that other services are protected.
 	// So, ultimately, we would need a middleware
 	authRouter.HandleFunc("/signin", sic.SigninHandler)
 
-
-
-
-
-
-
-    // CORS Header
-   // cors := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
+	// CORS Header
+	// cors := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
 	// Adding Prometheus http handler to expose the metrics
 	// this will display our metrics as well as some standard metrics
 	mainRouter.Path("/metrics").Handler(promhttp.Handler())
@@ -83,14 +72,14 @@ func main() {
 	// Add time outs
 	server := &http.Server{
 		Addr:    ":9090",
-		Handler:  mainRouter,
+		Handler: mainRouter,
 	}
 	fmt.Println("Listening on: 192.168.247.79:9090")
 	err = server.ListenAndServe()
 	if err != nil {
 		fmt.Println("Error Booting the Server")
 	}
-	
+
 	err = monitormodule.MonitorBinder(log)
 	if err != nil {
 		fmt.Println(err)

@@ -56,17 +56,18 @@ func getSignedToken() (string, error) {
 	// aud - audience
 	// iss - issuer
 	// exp - expiration of the Token
-	claimsMap := map[string]string{
-		"aud": "frontend.knowsearch.ml",
-		"iss": "knowsearch.ml",
-		"exp": fmt.Sprint(time.Now().Add(time.Minute * 1).Unix()),
+	claims := &jwt.JWTClaim{
+		Aud:" frontend.knowsearch.ml",
+		Iss: "knowsearch.ml",
+		Exp:  fmt.Sprint(time.Now().Add(time.Minute * 1).Unix()),
 	}
+
 	// here we provide the shared secret. It should be very complex.
 	// Also, it should be passed as a System Environment variable
 
 	secret := jwt.GetSecret()
 	header := "HS256"
-	tokenString, err := jwt.GenerateToken(header, claimsMap, secret)
+	tokenString, err := jwt.GenerateToken(header, claims, secret)
 	if err != nil {
 		return tokenString, err
 	}

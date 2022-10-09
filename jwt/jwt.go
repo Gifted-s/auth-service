@@ -1,12 +1,15 @@
 package jwt
+
 import (
+	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
-	"crypto/hmac"
 	"strings"
-	"encoding/json"
+	"time"
 	//"github.com/golang-jwt/jwt/v4"
 )
 
@@ -16,6 +19,13 @@ const (
 	EXPIRED_TOKEN = "Expired Token"
 )
 
+
+type JWTClaim struct{
+  Aud string
+  Iss string
+  Exp string
+}
+
 func GetSecret() string {
 	return os.Getenv("JWT_SECRET")
 }
@@ -24,7 +34,7 @@ func GetSecret() string {
 
 
 // Function for generating the tokens.
-func GenerateToken(header string, payload map[string]string, secret string) (string, error) {
+func GenerateToken(header string, payload *JWTClaim, secret string) (string, error) {
 	// create a new hash of type sha256. We pass the secret key to it
 	h := hmac.New(sha256.New, []byte(secret))
 	header64 := base64.StdEncoding.EncodeToString([]byte(header))
@@ -52,22 +62,22 @@ func GenerateToken(header string, payload map[string]string, secret string) (str
 }
 
 // This helps in validating the token
-func ValidateToken(token string, secret string) (bool, error) {
+func ValidateToken(token string, secret string) error {
 	// JWT has 3 parts separated by '.'
 	splitToken := strings.Split(token, ".")
 	// if length is not 3, we know that the token is corrupt
 	if len(splitToken) != 3 {
-		return false, nil
+		return errors.New(CORRUPT_TOKEN)
 	}
 
 	// decode the header and payload back to strings
 	header, err := base64.StdEncoding.DecodeString(splitToken[0])
 	if err != nil {
-		return false, err
+		return  err
 	}
 	payload, err := base64.StdEncoding.DecodeString(splitToken[1])
 	if err != nil {
-		return false, err
+		return  err
 	}
 	//again create the signature
 	unsignedStr := string(header) + string(payload)
@@ -79,9 +89,14 @@ func ValidateToken(token string, secret string) (bool, error) {
 
 	// if both the signature don’t match, this means token is wrong
 	if signature != splitToken[2] {
-		return false, nil
+	  return errors.New(INVALID_TOKEN)
+	}
+	var payloadMap JWTClaim
+    json.Unmarshal(payload, &payloadMap)
+	if payloadMap.Exp < fmt.Sprint(time.Now().Unix()){
+		return errors.New(EXPIRED_TOKEN)
 	}
 	// This means the token matches
-	return true, nil
+	return nil
 }
 
