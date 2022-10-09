@@ -1,0 +1,16 @@
+{"Time":"2022-10-07T21:47:30.009949+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signin_error 0","signin_fail 0","signin_success 0","signin_total 0"]}
+{"Time":"2022-10-07T21:47:30.009707+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signup_fail 0","signup_success 0","signup_total 0"]}
+{"Time":"2022-10-07T21:47:35.002209+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signin_error 0","signin_fail 0","signin_success 0","signin_total 0"]}{"Time":"2022-10-07T21:47:35.002225+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signup_fail 0","signup_success 0","signup_total 0"]}
+
+{"Time":"2022-10-07T21:47:39.995641+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signup_fail 0","signup_success 0","signup_total 0"]}
+{"Time":"2022-10-07T21:47:39.995749+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signin_error 0","signin_fail 0","signin_success 0","signin_total 0"]}
+{"Time":"2022-10-07T21:47:44.998523+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signup_fail 0","signup_success 0","signup_total 0"]}
+{"Time":"2022-10-07T21:47:44.99947+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signin_error 0","signin_fail 0","signin_success 0","signin_total 0"]}
+{"Time":"2022-10-07T21:53:32.188274+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signup_fail 0","signup_success 0","signup_total 0"]}{"Time":"2022-10-07T21:53:32.188242+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signin_error 0","signin_fail 0","signin_success 0","signin_total 0"]}
+
+{"Time":"2022-10-07T21:53:37.180309+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signup_fail 0","signup_success 0","signup_total 0"]}
+{"Time":"2022-10-07T21:53:37.180421+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signin_error 0","signin_fail 0","signin_success 0","signin_total 0"]}
+{"Time":"2022-10-07T21:53:42.181749+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signup_fail 0","signup_success 0","signup_total 0"]}
+{"Time":"2022-10-07T21:53:42.181906+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signin_error 0","signin_fail 0","signin_success 0","signin_total 0"]}
+{"Time":"2022-10-07T21:53:47.182162+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signup_fail 0","signup_success 0","signup_total 0"]}
+{"Time":"2022-10-07T21:53:47.182521+01:00","Pipelineid":2022,"Region":"APAC","MetricDetails":["signin_error 0","signin_fail 0","signin_success 0","signin_total 0"]}

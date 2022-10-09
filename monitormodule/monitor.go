@@ -124,7 +124,6 @@ func showDemo(log *zap.Logger, finalChan <-chan string, wg *sync.WaitGroup) {
 
 // MonitorBinder binds all the goroutines and combines the output
 func MonitorBinder(log *zap.Logger) error {
-	log.Info("Got here")
 	content, err := ioutil.ReadFile(metricConfFile)
 	if err != nil {
 		return err
@@ -133,15 +132,29 @@ func MonitorBinder(log *zap.Logger) error {
 	metricEndpoints := configMap{}
 	yaml.Unmarshal(content, &metricEndpoints)
 
-	aggregatorChan := make(chan []string)
-	go dataAggregator(log, "Signin", metricEndpoints, aggregatorChan)
-	go dataAggregator(log, "Signup", metricEndpoints, aggregatorChan)
+	aggregatorChan1 := make(chan []string)
+	aggregatorChan2 := make(chan []string)
+	go dataAggregator(log, "Signin", metricEndpoints, aggregatorChan1)
+	go dataAggregator(log, "Signup", metricEndpoints, aggregatorChan2)
+
+	aggregateFanInChan := make(chan []string)
+
+	go func() {
+		for {
+			select {
+			case msg1 := <-aggregatorChan1:
+				aggregateFanInChan <- msg1
+			case msg2 := <-aggregatorChan2:
+				aggregateFanInChan <- msg2
+			}
+		}
+	}()
 
 	transformChan1 := make(chan string)
 	transformChan2 := make(chan string)
 
-	go dataTransform(log, 1, aggregatorChan, transformChan1, metricEndpoints.Metadataregion, metricEndpoints.Metadatapipelineid)
-	go dataTransform(log, 2, aggregatorChan, transformChan2, metricEndpoints.Metadataregion, metricEndpoints.Metadatapipelineid)
+	go dataTransform(log, 1, aggregateFanInChan, transformChan1, metricEndpoints.Metadataregion, metricEndpoints.Metadatapipelineid)
+	go dataTransform(log, 2, aggregateFanInChan, transformChan2, metricEndpoints.Metadataregion, metricEndpoints.Metadatapipelineid)
 
 	transChannel := make(chan string)
 
