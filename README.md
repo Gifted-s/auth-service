@@ -1,6 +1,6 @@
 # Authentication Microservice. \[REST\]
 ## JWT
-I will create my own JWT for authentication. This requires a key. H256 algo will be used to generate the signature.
+ JWT for authentication. This requires a key. H256 algo will be used to generate the signature.
 
 
 JWT has the following components
